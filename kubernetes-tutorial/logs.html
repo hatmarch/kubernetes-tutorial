@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Logs :: Kubernetes Tutorial</title>
-    <link rel="canonical" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/kubernetes-tutorial/logs.html">
+    <link rel="canonical" href="https://hatmarch.github.io/kubernetes-tutorial/kubernetes-tutorial/logs.html">
     <meta name="generator" content="Antora 2.3.1">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -13,7 +13,7 @@
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
-      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-developer-demos.github.io/kubernetes-tutorial">Kubernetes Tutorial</a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -170,8 +170,8 @@
     <li><a href="logs.html">Logs</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/redhat-scholars/kubernetes-tutorial/edit/master/documentation/modules/ROOT/pages/logs.adoc">Edit this Page</a></div>
-  </div>
+  <div class="edit-this-page"><a href="file:///workspaces/kubernetes-tutorial/documentation/modules/ROOT/pages/logs.adoc">Edit this Page</a></div>
+</div>
   <div class="content">
 <article class="doc">
 <h1 class="page">Logs</h1>
@@ -306,6 +306,9 @@ EOF</code></pre>
 <p><a id="tabset1_minikube"></a>Minikube</p>
 </li>
 <li>
+<p><a id="tabset1_remote-minikube"></a>Remote Minikube</p>
+</li>
+<li>
 <p><a id="tabset1_hosted"></a>Hosted</p>
 </li>
 </ul>
@@ -315,6 +318,14 @@ EOF</code></pre>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IP=$(minikube ip -p devnation)
+PORT=$(kubectl get service/the-service -o jsonpath="{.spec.ports[*].nodePort}")</code></pre>
+</div>
+</div>
+</div>
+<div class="tab-pane" aria-labelledby="tabset1_remote-minikube">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IP=$(kubectl cluster-info | grep "Kubernetes " | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | sed -r 's#^.*https://([^:]+):[[:digit:]]+$#\1#')
 PORT=$(kubectl get service/the-service -o jsonpath="{.spec.ports[*].nodePort}")</code></pre>
 </div>
 </div>
@@ -364,7 +375,7 @@ If you are in AWS, you need to get the <code>hostname</code> instead of <code>ip
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">while true
 do curl $IP:$PORT
-sleep .3
+sleep 0.8
 done</code></pre>
 </div>
 </div>
