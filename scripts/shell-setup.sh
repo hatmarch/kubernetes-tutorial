@@ -14,11 +14,13 @@ if [[ -z "${SCRIPT}" ]]; then
 fi
 
 export DEMO_HOME=$( cd "$(dirname "${SCRIPT}")/.." ; pwd -P )
-export KUBECONFIG="${DEMO_HOME}/${CONFIG_SUBDIR}/kubeconfig"
-if [[ ! -f ${KUBECONFIG} ]]; then
-    echo "WARNING: No kubectl config file found at ${KUBECONFIG}."
-    echo "You might consider running $DEMO_HOME/scripts/create-kubeconfig.sh to set this up."
-    echo "Alternatively, export KUBECONFIG to the location of the desired kube config file"
+if [[ -z $KUBECONFIG ]]; then
+    export KUBECONFIG="${DEMO_HOME}/${CONFIG_SUBDIR}/kubeconfig"
+    if [[ ! -f ${KUBECONFIG} ]]; then
+        echo "WARNING: No kubectl config file found at ${KUBECONFIG}."
+        echo "You might consider running $DEMO_HOME/scripts/create-kubeconfig.sh to set this up."
+        echo "Alternatively, export KUBECONFIG to the location of the desired kube config file"
+    fi
 fi
 
 echo "Welcome to kubernetes tutorial"
