@@ -3,17 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Building Images :: Kubernetes Tutorial</title>
+    <title>Building Images :: Kubernetes Tutorial (Proposed Changes)</title>
     <link rel="canonical" href="https://hatmarch.github.io/kubernetes-tutorial/kubernetes-tutorial/building-images.html">
     <meta name="generator" content="Antora 2.3.1">
     <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body class="article">
 <header class="header">
   <nav class="navbar">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
-      <a class="navbar-item" style="font-size: 24px; color: white" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial</a>
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial (Proposed Changes)</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -22,18 +25,35 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
-        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
-        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <a class="navbar-item" href="#">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">CheatSheets</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">CheatSheet A</a>
+            <a class="navbar-item" href="#">CheatSheet B</a>
+            <a class="navbar-item" href="#">CheatSheet C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Upcoming Events</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Event A</a>
+            <a class="navbar-item" href="#">Event B</a>
+            <a class="navbar-item" href="#">Event C</a>
+          </div>
+        </div>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+            <a class="navbar-item" href="#">Tutorial A</a>
+            <a class="navbar-item" href="#">Tutorial B</a>
+            <a class="navbar-item" href="#">Tutorial C</a>
           </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
         </div>
       </div>
     </div>
@@ -45,7 +65,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html"></a></h3>
+    <h3 class="title"><a href="index.html" class=" query-params-link">kubernetes-tutorial</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -156,6 +176,22 @@
 </ul>
   </nav>
 </div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">kubernetes-tutorial</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">kubernetes-tutorial</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
     </div>
   </aside>
 </div>
@@ -219,6 +255,7 @@ To make it work correctly, you need to run this section in a new terminal window
 <div class="content">
 <img src="_images/hello-world-app.png" alt="hello world app">
 </div>
+<div class="title">Figure 1. MyRESTController.java</div>
 </div>
 <div class="paragraph">
 <p>Compile, build and test the Spring Boot Java project:</p>
@@ -258,14 +295,14 @@ java -jar target/boot-demo-1.0.0.jar</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Change <code>quay.io</code> for your registry (e.g. <code>docker.io</code>) and <code>mhildenb</code> to your organization.  This next step does assume you have a working installation of Docker for Mac/Windows/Linux.
+Change <code>quay.io</code> for your registry (e.g. <code>docker.io</code>) and <code>your-repo</code> to your organization.  This next step does assume you have a working installation of Docker for Mac/Windows/Linux.
 </td>
 </tr>
 </table>
 </div>
 <div id="build-container--building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker build -t quay.io/mhildenb/myapp:v1 .</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker build -t quay.io/your-repo/myapp:v1 .</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -293,7 +330,7 @@ Step 6/6 : CMD java $JAVA_OPTIONS -jar $JAVA_APP_JAR
 Removing intermediate container 46bcab555de7
  ---&gt; 85b78b9b70b1
 Successfully built 85b78b9b70b1
-Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
+Successfully tagged quay.io/your-repo/myapp:v1</code></pre>
 </div>
 </div>
 </div>
@@ -306,12 +343,12 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="run-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run --rm -it -p 8080:8080 --name myapp quay.io/mhildenb/myapp:v1</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run --rm -it -p 8080:8080 --name myapp quay.io/your-repo/myapp:v1</code></pre>
 </div>
 </div>
 <div id="curl-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl docker.for.mac.localhost:8080</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl localhost:8080</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -321,7 +358,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="curl-sys-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl docker.for.mac.localhost:8080/sysresources</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl localhost:8080/sysresources</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -336,10 +373,11 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 <div class="content">
 <img src="_images/docker-settings.png" alt="Docker Settings">
 </div>
+<div class="title">Figure 2. Docker settings</div>
 </div>
 <div id="curl-consume-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl docker.for.mac.localhost:8080/consume</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl localhost:8080/consume</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -365,7 +403,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="run-container-constrained-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run --rm -it -p 8080:8080 -m 400m --cpus="1" --name myapp quay.io/mhildenb/myapp:v1</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run --rm -it -p 8080:8080 -m 400m --cpus="1" --name myapp quay.io/your-repo/myapp:v1</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -373,7 +411,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="curl-sys-constrained-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl docker.for.mac.localhost:8080/sysresources</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl localhost:8080/sysresources</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -386,7 +424,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="curl-consume-crash-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl docker.for.mac.localhost:8080/consume</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl localhost:8080/consume</code></pre>
 </div>
 </div>
 </div>
@@ -399,7 +437,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="build-mem-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker build -t quay.io/mhildenb/myapp:v1 -f Dockerfile_Memory .</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker build -t quay.io/your-repo/myapp:v1 -f Dockerfile_Memory .</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -407,7 +445,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="run-sys-constrained-fix-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run --rm -it -p 8080:8080 -m 400m --cpus="1" --name myapp quay.io/mhildenb/myapp:v1</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker run --rm -it -p 8080:8080 -m 400m --cpus="1" --name myapp quay.io/your-repo/myapp:v1</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -415,7 +453,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="curl-sys-constrained-fix-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl docker.for.mac.localhost:8080/sysresources</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl localhost:8080/sysresources</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -428,7 +466,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 </div>
 <div id="curl-consume-fix-container-building-images" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl docker.for.mac.localhost:8080/consume</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl localhost:8080/consume</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -442,7 +480,7 @@ Successfully tagged quay.io/mhildenb/myapp:v1</code></pre>
 <div id="push-container-building-images" class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker login quay.io
-docker push quay.io/mhildenb/myapp:v1</code></pre>
+docker push quay.io/your-repo/myapp:v1</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">

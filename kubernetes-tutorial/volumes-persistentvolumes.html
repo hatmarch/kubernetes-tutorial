@@ -3,17 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Volumes &amp; Persistent Volumes :: Kubernetes Tutorial</title>
+    <title>Volumes &amp; Persistent Volumes :: Kubernetes Tutorial (Proposed Changes)</title>
     <link rel="canonical" href="https://hatmarch.github.io/kubernetes-tutorial/kubernetes-tutorial/volumes-persistentvolumes.html">
     <meta name="generator" content="Antora 2.3.1">
     <link rel="stylesheet" href="../_/css/site.css">
+<link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body class="article">
 <header class="header">
   <nav class="navbar">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
-      <a class="navbar-item" style="font-size: 24px; color: white" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial</a>
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
+          src="../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial (Proposed Changes)</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
@@ -22,18 +25,35 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
-        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
-        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <a class="navbar-item" href="#">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">CheatSheets</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">CheatSheet A</a>
+            <a class="navbar-item" href="#">CheatSheet B</a>
+            <a class="navbar-item" href="#">CheatSheet C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Upcoming Events</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Event A</a>
+            <a class="navbar-item" href="#">Event B</a>
+            <a class="navbar-item" href="#">Event C</a>
+          </div>
+        </div>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
-            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+            <a class="navbar-item" href="#">Tutorial A</a>
+            <a class="navbar-item" href="#">Tutorial B</a>
+            <a class="navbar-item" href="#">Tutorial C</a>
           </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
         </div>
       </div>
     </div>
@@ -45,7 +65,7 @@
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html"></a></h3>
+    <h3 class="title"><a href="index.html" class=" query-params-link">kubernetes-tutorial</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -155,6 +175,22 @@
   </li>
 </ul>
   </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">kubernetes-tutorial</span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">kubernetes-tutorial</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </div>
     </div>
   </aside>
@@ -318,9 +354,24 @@ All Containers in the same Pod can read and write in the same <code>emptyDir</co
 When a Pod is restarted or removed, the data in the` emptyDir` is lost forever.</p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s deploy a service that exposes two endpoints, one to write content to a file and another one to retrieve the content from that file.  Use <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> to quickly open <code>myboot-pod-volume.yml</code></p>
+<p>Let&#8217;s deploy a service that exposes two endpoints, one to write content to a file and another one to retrieve the content from that file.  Open <code>myboot-pod-volume.yml</code></p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you&#8217;re running this from within VSCode you can use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>p</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> on Mac OSX) to quickly open <code>myboot-pod-volume.yml</code></p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
+<div class="title">myboot-pod-volume.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Pod <i class="conum" data-value="1"></i><b>(1)</b>
@@ -549,10 +600,25 @@ curl localhost:8080/readgreetingfile</code></pre>
 <div class="paragraph">
 <p><code>emptyDir</code> is shared between containers of the same Pod.  Let&#8217;s take a look at a deployment that creates two containers in the same pod that mount the same <code>emptyDir</code> volume.</p>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>Use <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> to open <code>myboot-pods-volume.yml</code> quickly:</p>
+<p>If you&#8217;re running this from within VSCode you can use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>p</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> on Mac OSX) to quickly open <code>myboot-pods-volume.yml</code></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Consider <code>myboot-pods-volume.yml</code>:</p>
 </div>
 <div class="listingblock console-output">
+<div class="title">myboot-pods-volume.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Pod
@@ -654,9 +720,9 @@ myboot-demo   <mark>2/2</mark>    Running   0          4s</code></pre>
 <div class="tab-pane" aria-labelledby="tabset7_terminal-3">
 <div class="sidebarblock">
 <div class="content">
-<div class="title">Open Terminal in Editor</div>
+<div class="title">VSCode: Open Terminal in Editor</div>
 <div class="paragraph">
-<p>You may be running out of real estate in VSCode at this point.  You might consider opening a new terminal in the editor pane by using <span class="keyseq"><kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>p</kbd></span> to run the <code>Terminal: Create Terminal in Editor Area</code> command</p>
+<p>If you&#8217;re doing this tutorial from within VSCode you may be running out of space to put your terminals at this point!  If you have a recent release of VSCode, you might consider opening a new terminal in the editor pane by using <span class="keyseq"><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>p</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>p</kbd></span> on Mac OSX) to run the <code>Terminal: Create Terminal in Editor Area</code> command</p>
 </div>
 </div>
 </div>
@@ -827,12 +893,24 @@ Jambo</code></pre>
 <div class="sect2">
 <h3 id="_hostpath"><a class="anchor" href="#_hostpath"></a>HostPath</h3>
 <div class="paragraph">
-<p>A <code>hostPath</code> volume mounts a file or directory from the node&#8217;s filesystem into the Pod.</p>
+<p>A <code>hostPath</code> volume mounts a file or directory from the node&#8217;s filesystem into the Pod.  Take a look at <code>myboot-pod-volume-hostpath.yml</code></p>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
-<p>Use <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> to quickly open <code>myboot-pod-volume-hostpath.yml</code></p>
+<p>If you&#8217;re running this from within VSCode you can use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>p</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> on Mac OSX) to quickly open <code>myboot-pod-volume-hostpath.yml</code></p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
+<div class="title">myboot-pod-volume-hostpath.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Pod
@@ -905,23 +983,9 @@ spec:
 </div>
 <div class="sidebarblock">
 <div class="content">
-<div class="title">Open Terminal in Editor</div>
+<div class="title">VSCode: Open Terminal in Editor</div>
 <div class="paragraph">
-<p>You may be running out of real estate in VSCode at this point.  You might consider opening a new terminal in the editor pane by using <span class="keyseq"><kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>p</kbd></span> to run the <code>Terminal: Create Terminal in Editor Area</code> command</p>
-</div>
-</div>
-</div>
-<div class="sidebarblock">
-<div class="content">
-<div class="title">Remote Minikube</div>
-<div class="paragraph">
-<p>If you are running minikube remotely you will need to first SSH to the machine that is running minikube.  For example</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IP=$(kubectl cluster-info | grep "Kubernetes " | sed -r 's/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g' | sed -r 's#^.*https://([^:]+):[[:digit:]]+$#\1#')
-ssh -i ~/.ssh/fedora-mbp mwh@${IP}</code></pre>
-</div>
+<p>If you&#8217;re doing this tutorial from within VSCode you may be running out of space to put your terminals at this point!  If you have a recent release of VSCode, you might consider opening a new terminal in the editor pane by using <span class="keyseq"><kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>p</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>SHIFT</kbd>+<kbd>p</kbd></span> on Mac OSX) to run the <code>Terminal: Create Terminal in Editor Area</code> command</p>
 </div>
 </div>
 </div>
@@ -1082,9 +1146,24 @@ It can request for specific volume size or for example the access mode.</p>
 <div class="sect2">
 <h3 id="_persistent_volumeclaim_with_hostpath"><a class="anchor" href="#_persistent_volumeclaim_with_hostpath"></a>Persistent volume/claim with hostPath</h3>
 <div class="paragraph">
-<p>Let&#8217;s use <code>hostPath</code> strategy but not configuring it directly as volume, but using persistence volume and persistence volume claim.  Use <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> to open <code>demo-persistent-volume-hostpath.yaml</code> quickly:</p>
+<p>Let&#8217;s use <code>hostPath</code> strategy but not configuring it directly as volume, but using persistence volume and persistence volume claim. Check out <code>demo-persistent-volume-hostpath.yaml</code>:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you&#8217;re running this from within VSCode you can use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>p</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> on Mac OSX) to quickly open <code>demo-persistent-volume-hostpath.yaml</code></p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
+<div class="title">demo-persistent-volume-hostpath.yaml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: PersistentVolume
 apiVersion: v1
@@ -1147,9 +1226,24 @@ my-persistent-volume                       100Mi      RWO            Retain     
 </div>
 <div class="paragraph">
 <p>Then from the dev side, we need to claim what we need from the <em>PV</em>.
-In the following example, we are requesting for <strong>10Mi</strong> space.  Use <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> to open <code>myboot-persistent-volume-claim.yaml</code> quickly:</p>
+In the following example, we are requesting for <strong>10Mi</strong> space.  See <code>myboot-persistent-volume-claim.yaml</code>:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you&#8217;re running this from within VSCode you can use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>p</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> on Mac OSX) to quickly open <code>myboot-persistent-volume-claim.yaml</code></p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
+<div class="title">myboot-persistent-volume-claim.yaml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: PersistentVolumeClaim
 apiVersion: v1
@@ -1178,9 +1272,24 @@ myboot-volumeclaim   Bound    my-persistent-volume   100Mi      RWO            p
 </div>
 </div>
 <div class="paragraph">
-<p>The big difference is that now in the pod you are just defining in the <code>volumes</code> section, not the volume configuration directly, but the <em>persistent volume claim</em> to use.  Use <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> to open <code>myboot-pod-volume-pvc.yaml</code> quickly:</p>
+<p>The big difference is that now in the pod you are just defining in the <code>volumes</code> section, not the volume configuration directly, but the <em>persistent volume claim</em> to use.  See <code>myboot-pod-volume-pvc.yaml</code>:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If you&#8217;re running this from within VSCode you can use <span class="keyseq"><kbd>CTRL</kbd>+<kbd>p</kbd></span> (or <span class="keyseq"><kbd>CMD</kbd>+<kbd>p</kbd></span> on Mac OSX) to quickly open <code>myboot-pod-volume-pvc.yaml</code></p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
+<div class="title">myboot-pod-volume-pvc.yaml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Pod
@@ -1302,19 +1411,6 @@ Jambo</code></pre>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">exit</code></pre>
-</div>
-</div>
-<div class="sidebarblock">
-<div class="content">
-<div class="title">Remote Minikube</div>
-<div class="paragraph">
-<p>If you had to first <code>ssh</code> to the minikube host, then you&#8217;ll need to exit one more time</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">exit</code></pre>
-</div>
-</div>
 </div>
 </div>
 </div>
