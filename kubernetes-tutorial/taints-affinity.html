@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Taints and Affinity :: Kubernetes Tutorial (Proposed Changes)</title>
     <link rel="canonical" href="https://hatmarch.github.io/kubernetes-tutorial/kubernetes-tutorial/taints-affinity.html">
+    <link rel="prev" href="volumes-persistentvolumes.html">
+    <link rel="next" href="jobs-cronjobs.html">
     <meta name="generator" content="Antora 2.3.1">
     <link rel="stylesheet" href="../_/css/site.css">
 <link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
@@ -12,60 +14,57 @@
   </head>
   <body class="article">
 <header class="header">
+  <style>
+    /* override master stylesheet properties for this partial here */
+
+    .navbar-item {
+      flex: unset;
+    }
+
+    .doc {
+      max-width: unset;
+    }
+
+
+  </style>
+
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
           src="../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
-      <a class="navbar-item" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial (Proposed Changes)</a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial (Proposed Changes)</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
         <span></span>
       </button>
     </div>
-    <div id="topbar-nav" class="navbar-menu">
+        <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="#">Books</a>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="#">CheatSheets</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">CheatSheet A</a>
-            <a class="navbar-item" href="#">CheatSheet B</a>
-            <a class="navbar-item" href="#">CheatSheet C</a>
-          </div>
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="#">Upcoming Events</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">Event A</a>
-            <a class="navbar-item" href="#">Event B</a>
-            <a class="navbar-item" href="#">Event C</a>
-          </div>
-        </div>
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">Tutorial A</a>
-            <a class="navbar-item" href="#">Tutorial B</a>
-            <a class="navbar-item" href="#">Tutorial C</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guides/" target="_blank">Outer Loop</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/openshift-starter-guides/" target="_blank">OpenShift Starter</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/tekton-tutorial/" target="_blank">Tekton</a>
           </div>
-        </div>
-        <div class="navbar-item">
-          <span class="control">
-            <a class="button is-primary" href="#">Download</a>
-          </span>
         </div>
       </div>
     </div>
   </nav>
-</header>
-<div class="body">
+</header><div class="body">
 <div class="nav-container" data-component="kubernetes-tutorial" data-version="master">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html" class=" query-params-link">kubernetes-tutorial</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -176,7 +175,7 @@
 </ul>
   </nav>
 </div>
-<div class="nav-panel-explore" data-panel="explore">
+<div class="nav-panel-explore"  style="display: none;"  data-panel="explore">
   <div class="context">
     <span class="title">kubernetes-tutorial</span>
     <span class="version">master</span>
@@ -191,8 +190,7 @@
       </ul>
     </li>
   </ul>
-</div>
-    </div>
+</div>    </div>
   </aside>
 </div>
 <main class="article">
@@ -429,8 +427,8 @@ node/ip-10-0-175-64.eu-central-1.compute.internal tainted</code></pre>
 <div class="tab-pane" aria-labelledby="tabset3_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    RESTARTS   AGE     IP       NODE     NOMINATED NODE   READINESS GATES
-myboot-7cbfbd9b89-hqx6h   0/1     <mark>Pending</mark>   0          4m12s   &lt;none&gt;   &lt;none&gt;   &lt;none&gt;           &lt;none&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    AGE     NODE
+myboot-7cbfbd9b89-hqx6h   0/1     <mark>Pending</mark>   4m12s   devnation</code></pre>
 </div>
 </div>
 </div>
@@ -621,9 +619,8 @@ ip-10-0-175-64.eu-central-1.compute.internal    Ready    worker   18h   v1.16.2<
 <div class="tab-pane" aria-labelledby="tabset5_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS              RESTARTS   AGE   IP       NODE            NOMINATED NODE   READINES
-S GATES
-myboot-7cbfbd9b89-hqx6h   0/1     <mark>ContainerCreating</mark>   0          20m   &lt;none&gt;   <mark>devnation-m02</mark>   &lt;none&gt;           &lt;none&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS              AGE       NODE
+myboot-7cbfbd9b89-hqx6h   0/1     <mark>ContainerCreating</mark>   20m   <mark>devnation-m02</mark></code></pre>
 </div>
 </div>
 </div>
@@ -706,9 +703,8 @@ Taints:             color=blue:NoSchedule</code></pre>
 <div class="tab-pane" aria-labelledby="tabset7_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    RESTARTS   AGE   IP           NODE            NOMIN
-ATED NODE   READINESS GATES
-myboot-7cbfbd9b89-bzhxw   1/1     <mark>Running</mark>   0          18m   172.17.0.2   devnation-m02   &lt;none&gt;           &lt;none&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    AGE   NODE
+myboot-7cbfbd9b89-bzhxw   1/1     <mark>Running</mark>   18m   devnation-m02</code></pre>
 </div>
 </div>
 </div>
@@ -780,8 +776,8 @@ myboot-7cbfbd9b89-bzhxw   1/1     <mark>Running</mark>   0          18m   172.17
 <div class="tab-pane" aria-labelledby="tabset9_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    RESTARTS   AGE
-myboot-84b457458b-mbf9r   1/1     <mark>Running</mark>   0          3m18s</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    AGE     NODE
+myboot-84b457458b-mbf9r   1/1     <mark>Running</mark>   3m18s   devnation-m02</code></pre>
 </div>
 </div>
 </div>
@@ -867,8 +863,8 @@ But notice that if we add this taint to a node that already has running/schedule
 <div class="tab-pane" aria-labelledby="tabset12_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    RESTARTS   AGE   IP           NODE            NOMINATED NODE   READINESS GATES
-myboot-7cbfbd9b89-wpddg   1/1     Running   0          47s   172.17.0.2   devnation-m02   &lt;none&gt;           &lt;none&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    AGE   NODE
+myboot-7cbfbd9b89-wpddg   1/1     Running   47s   devnation-m02</code></pre>
 </div>
 </div>
 </div>
@@ -942,9 +938,9 @@ echo ${NODE}</code></pre>
 <div class="tab-pane" aria-labelledby="tabset15_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS              RESTARTS   AGE   IP           NODE     NOMINATED NODE   READINESS GATES
-myboot-7cbfbd9b89-5t24z   0/1     <mark>ContainerCreating</mark>   0          16s   &lt;none&gt;       devnation     &lt;none&gt;           &lt;none&gt;
-myboot-7cbfbd9b89-wpddg   1/1     <mark>Terminating</mark>         0          65m   172.17.0.2   devnation-m02   &lt;none&gt;           &lt;none&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS              AGE   NODE
+myboot-7cbfbd9b89-5t24z   0/1     <mark>ContainerCreating</mark>   16s   devnation
+myboot-7cbfbd9b89-wpddg   1/1     <mark>Terminating</mark>         65m   devnation-m02</code></pre>
 </div>
 </div>
 </div>
@@ -1104,8 +1100,8 @@ Reasons such as significant network communication between Pods and you want to a
 <div class="tab-pane" aria-labelledby="tabset19_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    RESTARTS   AGE   IP       NODE     NOMINATED NODE READINESS GATES
-myboot-546d4d9b45-7vgfc   0/1     <mark>Pending</mark>   0          6s    &lt;none&gt;   &lt;none&gt;   &lt;none&gt; &lt;none&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    AGE   NODE
+myboot-546d4d9b45-7vgfc   0/1     <mark>Pending</mark>   6s    &lt;none&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -1226,8 +1222,8 @@ ip-10-0-168-102.eu-central-1.compute.internal   Ready    master   26h   v1.16.2
 <div class="tab-pane" aria-labelledby="tabset21_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS              RESTARTS   AGE   IP       NODE NOMINATED NODE   READINESS GATES
-myboot-546d4d9b45-7vgfc   0/1     <mark>ContainerCreating</mark>   0          15m   &lt;none&gt;   devnation-m02 &lt;none&gt;           &lt;none&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS              AGE   NODE
+myboot-546d4d9b45-7vgfc   0/1     <mark>ContainerCreating</mark>   15m   devnation-m02</code></pre>
 </div>
 </div>
 </div>
@@ -1289,8 +1285,8 @@ echo ${NODE}</code></pre>
 <div class="tab-pane" aria-labelledby="tabset23_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    RESTARTS   AGE   IP           NODE            NOMINATED NODE   READINESS GATES
-myboot-546d4d9b45-7vgfc   1/1     Running   0          22m   172.17.0.2   devnation-m02   &lt;none&gt;           &lt;none&gt;</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   STATUS    AGE   NODE
+myboot-546d4d9b45-7vgfc   1/1     Running   22m   devnation-m02</code></pre>
 </div>
 </div>
 </div>
@@ -1619,6 +1615,10 @@ kubectl delete -f apps/kubefiles/myboot-deployment.yml</code></pre>
 </div>
 </div>
 </div>
+<nav class="pagination">
+  <span class="prev"><a href="volumes-persistentvolumes.html" class="query-params-link">Volumes</a></span>
+  <span class="next"><a href="jobs-cronjobs.html" class="query-params-link">Jobs &amp; CronJobs</a></span>
+</nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>

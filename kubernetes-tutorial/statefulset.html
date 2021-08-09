@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>StatefulSets :: Kubernetes Tutorial (Proposed Changes)</title>
     <link rel="canonical" href="https://hatmarch.github.io/kubernetes-tutorial/kubernetes-tutorial/statefulset.html">
+    <link rel="prev" href="daemonset.html">
+    <link rel="next" href="ingress.html">
     <meta name="generator" content="Antora 2.3.1">
     <link rel="stylesheet" href="../_/css/site.css">
 <link rel="icon" href="../_/img/favicon.ico" type="image/x-icon">
@@ -12,60 +14,57 @@
   </head>
   <body class="article">
 <header class="header">
+  <style>
+    /* override master stylesheet properties for this partial here */
+
+    .navbar-item {
+      flex: unset;
+    }
+
+    .doc {
+      max-width: unset;
+    }
+
+
+  </style>
+
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img
           src="../_/img/header_logo.png" height="40px" alt="Red Hat Developer Program"></a>
-      <a class="navbar-item" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial (Proposed Changes)</a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://hatmarch.github.io/kubernetes-tutorial">Kubernetes Tutorial (Proposed Changes)</a>
       <button class="navbar-burger" data-target="topbar-nav">
         <span></span>
         <span></span>
         <span></span>
       </button>
     </div>
-    <div id="topbar-nav" class="navbar-menu">
+        <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="#">Books</a>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="#">CheatSheets</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">CheatSheet A</a>
-            <a class="navbar-item" href="#">CheatSheet B</a>
-            <a class="navbar-item" href="#">CheatSheet C</a>
-          </div>
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="#">Upcoming Events</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">Event A</a>
-            <a class="navbar-item" href="#">Event B</a>
-            <a class="navbar-item" href="#">Event C</a>
-          </div>
-        </div>
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">Tutorial A</a>
-            <a class="navbar-item" href="#">Tutorial B</a>
-            <a class="navbar-item" href="#">Tutorial C</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guides/" target="_blank">Outer Loop</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/openshift-starter-guides/" target="_blank">OpenShift Starter</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/tekton-tutorial/" target="_blank">Tekton</a>
           </div>
-        </div>
-        <div class="navbar-item">
-          <span class="control">
-            <a class="button is-primary" href="#">Download</a>
-          </span>
         </div>
       </div>
     </div>
   </nav>
-</header>
-<div class="body">
+</header><div class="body">
 <div class="nav-container" data-component="kubernetes-tutorial" data-version="master">
   <aside class="nav">
     <div class="panels">
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="index.html" class=" query-params-link">kubernetes-tutorial</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -176,7 +175,7 @@
 </ul>
   </nav>
 </div>
-<div class="nav-panel-explore" data-panel="explore">
+<div class="nav-panel-explore"  style="display: none;"  data-panel="explore">
   <div class="context">
     <span class="title">kubernetes-tutorial</span>
     <span class="version">master</span>
@@ -191,8 +190,7 @@
       </ul>
     </li>
   </ul>
-</div>
-    </div>
+</div>    </div>
   </aside>
 </div>
 <main class="article">
@@ -214,11 +212,11 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>A <code>StatefulSet</code> provides a unique identity to the Pods that are managing.
-It can be used when your application requires a unique network identifier or persistence storage across Pod (re)scheduling or some guarantee about the ordering of deployment and scaling.</p>
+<p>A <code>StatefulSet</code> provides a unique identity to the Pods that they manage.
+<code>StatefulSet</code> s are particularly useful when your application requires a unique network identifier or persistence storage across Pod (re)scheduling or when your application needs some guarantee about the ordering of deployment and scaling.</p>
 </div>
 <div class="paragraph">
-<p>One of the most typical examples of using <em>StatefulSets</em> is when you need to deploy a primary/secondary servers (i.e database cluster) where you need to know beforehand the hostname of each of the servers to start the cluster.
+<p>One of the most typical examples of using <code>StatefulSet</code> s is when one needs to deploy primary/secondary servers (i.e database cluster) where you need to know beforehand the hostname of each of the servers to start the cluster.
 Also, when you scale up and down you want to do it in a specified order (i.e you want to start the primary node first and then the secondary node).</p>
 </div>
 <div class="admonitionblock important">
@@ -229,7 +227,7 @@ Also, when you scale up and down you want to do it in a specified order (i.e you
 </td>
 <td class="content">
 <div class="paragraph">
-<p><code>StatefulSet</code> requires a Kubernetes <em>Headless Service</em> instead of a standard Kubernetes <em>service</em>.</p>
+<p><code>StatefulSet</code> requires a Kubernetes <em>Headless Service</em> instead of a standard Kubernetes <em>service</em> in order for it to be accessed.  We will discuss this more below</p>
 </div>
 </td>
 </tr>
@@ -349,7 +347,7 @@ kubectl taint node ${NODE} app=quarkus-statefulset:NoExecute</code></pre>
 <h2 id="_statefulset"><a class="anchor" href="#_statefulset"></a>StatefulSet</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>StatefulSet is created by using the Kubernetes <code>StatefulSet</code> resource with a <strong>"headless service"</strong>:</p>
+<p>StatefulSet is created by using the Kubernetes <code>StatefulSet</code> resource:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -379,29 +377,46 @@ spec:
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Sets the <code>statefulset</code> name used as a hostname.</td>
+<td><code>serviceName</code> is the name of the (headless) service that governs this <code>StatefulSet</code>. This service must exist before the StatefulSet, and is responsible for the network identity of the set</td>
 </tr>
 </table>
 </div>
+<div id="hostname-formula" class="paragraph">
+<p>We can predict the hostname for any member pod of a <code>StatefulSet</code> by using the following "formula":</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
 <div class="paragraph">
-<p>Hostname follows the same pattern in all cases <code>serviceName</code> + a number starting from 0 and it is incremented for every replica by one.</p>
+<p><code>StatefulSet.name</code> + <code>-</code> + "ordinal index"</p>
+</div>
+</div>
 </div>
 <div class="paragraph">
-<p>And a headless service:</p>
+<p>The "ordinal index" is a number starting from <code>0</code> for the first pod created by the <code>StatefulSet</code> and is incremented by one for each additional replica pod.  So in this instance, the we would expect the first pod of the <code>StatefulSet</code> above to have the hostname:</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph">
+<p><code>quarkus-statefulset-0</code></p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, as mentioned above, to be able to route traffic to the pods of our StatefulSet, we also need to create a <strong>headless service</strong>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Service
 metadata:
-  name: quarkus-statefulset
+  name: <mark>quarkus</mark> <i class="conum" data-value="1"></i><b>(1)</b>
   labels:
     app: quarkus-statefulset
 spec:
   ports:
   - port: 8080
     name: web
-  clusterIP: None <i class="conum" data-value="1"></i><b>(1)</b>
+  clusterIP: None <i class="conum" data-value="2"></i><b>(2)</b>
   selector:
     app: quarkus-statefulset</code></pre>
 </div>
@@ -410,9 +425,16 @@ spec:
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Makes service headless.</td>
+<td>Notice that this matches the <code>serviceName</code> field of the <code>StatefulSet</code>.  This must match to create the dns entry</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Setting <code>clusterIP</code> to <code>None</code> is what makes the service "headless".</td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Apply the following <code>.yaml</code> to the cluster to create the <code>StatefulSet</code> and the corresponding headless service we looked at above:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -442,10 +464,10 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that the Pod name is the <code>serviceName</code> with a <code>-0</code>, as it is the first (0th if you will) instance.  This is referred to as its <em>ordinal index</em></p>
+<p>Notice that the Pod name is the <code>serviceName</code> with a <code>-0</code>, as it is the first (<code>0</code> th if you will) instance.  This is as we explained <a href="#hostname-formula">above</a></p>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s take a look at the stateful set</p>
+<p>Now let&#8217;s take a look at the stateful set itself</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -500,7 +522,7 @@ quarkus-statefulset-0   1/1     Running   0          95s
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that the name of the Pods continues to use the same nomenclature of <code>serviceName</code> + <code>-</code> + ordinal index</p>
+<p>Notice that the name of the Pods continues to use <a href="#hostname-formula">the same nomenclature that we called out above</a></p>
 </div>
 <div class="paragraph">
 <p>Also, if you check the order of events in the Kubernetes cluster, you&#8217;ll notice that the Pod name ending with <code>-1</code> is created <strong>before</strong> those with higher ordinal index (e.g. with suffix of <code>-2</code>).</p>
@@ -523,13 +545,82 @@ quarkus-statefulset-0   1/1     Running   0          95s
 4m2s        Normal   Started                   pod/quarkus-statefulset-2         Started container quarkus-statefulset</code></pre>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_stable_network_identities"><a class="anchor" href="#_stable_network_identities"></a>Stable Network Identities</h3>
+<div class="paragraph">
+<p>The reason we created the <strong>headless service</strong> previously was to ensure that the pods of our stateful set can be found <em>within</em> the cluster (see <a href="#_exposing_statefulsets">Exposing StatefulSets</a> for reaching services from outside the cluster).</p>
+</div>
+<div class="paragraph">
+<p>As each Pod is created, it gets a matching DNS subdomain, taking the form: <code>$(podname).$(governing service domain)</code>, where the governing service is defined by the <code>serviceName</code> field on the StatefulSet<sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
+</div>
+<div class="paragraph">
+<p>We can test this by creating a pod within the cluster and doing an <code>nslookup</code> from within the cluster.  Run the following command to create a pod in the namespace in which we can run cluster local <code>nslookup</code> queries</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl run -it --restart=Never --rm --image busybox:1.28 dns-test</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>From within the container, run the folllowing command to see if we can find a pod of our StatefulSet</p>
+</div>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset4_container"></a>Container</p>
+</li>
+</ul>
+</div>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset4_container">
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">nslookup quarkus-statefulset-0.quarkus</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This should yield the following output (though your reported IP address will vary)</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Server:    10.96.0.10
+Address 1: 10.96.0.10 kube-dns.kube-system.svc.cluster.local
+
+Name:      quarkus-statefulset-0.quarkus
+Address 1: 172.17.0.3 <mark>quarkus-statefulset-0.quarkus.myspace.svc.cluster.local</mark> <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Notice that the full address is <code>$(podname).$(governing service domain).$(namespace)</code>.svc.cluster.local</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can now exit the pod (causing it to be cleaned up) by issuing the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">exit</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>So with the help of a headless service we can find any pod of the StatefulSet by using its internal DNS name as formulated by the StatefulSet and the headless service.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_exposing_statefulsets"><a class="anchor" href="#_exposing_statefulsets"></a>Exposing StatefulSets</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Given that our stateful set needed to use a headless service, you&#8217;ll notice that no external IP is assigned that we can use to access our pods</p>
+<p>Given that our stateful set needed to use a headless service, you&#8217;ll notice that no external IP is assigned that we can use to access our pods from <em>outside</em> the cluster</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -546,8 +637,8 @@ Selector:          app=quarkus-statefulset
 Type:              ClusterIP
 IP Family Policy:  SingleStack
 IP Families:       IPv4
-#IP:                None#
-#IPs:               None#
+<mark>IP:                None</mark>
+<mark>IPs:               None</mark>
 Port:              web  8080/TCP
 TargetPort:        8080/TCP
 Endpoints:         172.17.0.3:8080,172.17.0.4:8080,172.17.0.5:8080
@@ -560,7 +651,7 @@ Events:            &lt;none&gt;</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">describe endpoints quarkus-statefulset</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl describe endpoints quarkus-statefulset</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -582,7 +673,7 @@ Events:  &lt;none&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This kind of makes sense since the whole point is that we want the name of each pod to have a predictable name.  To assist with our ability to access pods by name, kubernetes exposes a label on all statefulset pods that we can use as a selector to our service</p>
+<p>This kind of makes sense since the whole point of using <code>StatefulSets</code> is so that we can reference a specific pod by a predictable name instead of having them abstracted away by a normal (non-headless) <code>Service</code>.  To assist with our ability to access pods by name, kubernetes exposes a label on all <code>StatefulSet</code> pods that we can use as a selector to our service</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -670,15 +761,15 @@ spec:
 <div class="ulist tabs">
 <ul>
 <li>
-<p><a id="tabset4_minikube"></a>Minikube</p>
+<p><a id="tabset5_minikube"></a>Minikube</p>
 </li>
 <li>
-<p><a id="tabset4_hosted"></a>Hosted</p>
+<p><a id="tabset5_hosted"></a>Hosted</p>
 </li>
 </ul>
 </div>
 <div class="content">
-<div class="tab-pane" aria-labelledby="tabset4_minikube">
+<div class="tab-pane" aria-labelledby="tabset5_minikube">
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">IP=$(minikube ip -p devnation)
@@ -686,7 +777,7 @@ PORT=$(kubectl get service/quarkus-statefulset-2 -o jsonpath="{.spec.ports[*].no
 </div>
 </div>
 </div>
-<div class="tab-pane" aria-labelledby="tabset4_hosted">
+<div class="tab-pane" aria-labelledby="tabset5_hosted">
 <div class="paragraph">
 <p>If using a hosted Kubernetes cluster like OpenShift then use curl and the EXTERNAL-IP address with port <code>8080</code> or get it using <code>kubectl</code>:</p>
 </div>
@@ -736,7 +827,7 @@ If you are in AWS, you need to get the <code>hostname</code> instead of <code>ip
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Notice the hostname of <code>quarkus-statefulset-2</code>.  This is part of why we used stateful sets in the first place</td>
+<td>Notice the hostname of <code>quarkus-statefulset-2</code>.  This is part of why we used stateful sets in the first place, so that pods would get predictable hostnames</td>
 </tr>
 </table>
 </div>
@@ -757,12 +848,12 @@ If you are in AWS, you need to get the <code>hostname</code> instead of <code>ip
 <div class="ulist tabs">
 <ul>
 <li>
-<p><a id="tabset5_terminal-2"></a>Terminal 2</p>
+<p><a id="tabset6_terminal-2"></a>Terminal 2</p>
 </li>
 </ul>
 </div>
 <div class="content">
-<div class="tab-pane" aria-labelledby="tabset5_terminal-2">
+<div class="tab-pane" aria-labelledby="tabset6_terminal-2">
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                    READY   STATUS        RESTARTS   AGE
@@ -804,6 +895,16 @@ kubectl delete -f apps/kubefiles/quarkus-statefulset-external-svc.yaml</code></p
 </div>
 </div>
 </div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. See also the official Kubernetes documentation <a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id">here</a>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="daemonset.html" class="query-params-link">DaemonSet</a></span>
+  <span class="next"><a href="ingress.html" class="query-params-link">Ingress</a></span>
+</nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>
